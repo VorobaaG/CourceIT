@@ -30,7 +30,7 @@ val Typography = Typography(
         letterSpacing = 0.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = FontFamily(Font(R.font.roboto,FontWeight.Normal)),
+        fontFamily = FontFamily(Font(R.font.roboto,FontWeight.W400)),
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.sp
