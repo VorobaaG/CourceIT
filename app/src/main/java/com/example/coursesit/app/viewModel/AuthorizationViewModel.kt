@@ -27,7 +27,7 @@ class AuthorizationViewModel @Inject constructor(
     }
 
     fun changeValueLogin(login: String){
-        currentLogin  = login
+        currentLogin  = login.filter { it !in 'А'..'Я' && it !in 'а'..'я' }
         checkValidLogin()
     }
 

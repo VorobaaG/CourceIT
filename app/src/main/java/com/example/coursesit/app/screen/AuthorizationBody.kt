@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
@@ -132,7 +133,9 @@ fun authorizationBody(
                         .focusRequester(FocusRequester()),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(color = White),
                     cursorBrush = SolidColor(White) ,
-                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(
                         onNext = {
                             focusRequester2.requestFocus()
