@@ -20,8 +20,6 @@ class MainPageViewModel(
     private val _currentCourses = MutableStateFlow(listOf<Course>())
     val currentCourses= _currentCourses.asStateFlow()
 
-    var favoriteList  = mutableSetOf<Int>()
-        private set
 
 
     init {
@@ -32,12 +30,16 @@ class MainPageViewModel(
 
     fun showAllFavoriteCourses(){
         viewModelScope.launch(Dispatchers.IO) {
-            _currentCourses.value = favoriteList.map {  getCourse.getById(it) }
+            _currentCourses.value = currentCourses.value.filter { it.hasLike == true }.map {getCourse.getById(it.id) }
         }
     }
 
     fun addInFavoriteList(id:Int){
-        favoriteList.add(id)
+        for(i in currentCourses.value){
+            if(i.id == id){
+                i.hasLike.not()
+            }
+        }
     }
 
 

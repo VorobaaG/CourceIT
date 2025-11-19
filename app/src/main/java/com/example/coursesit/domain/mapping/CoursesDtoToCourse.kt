@@ -12,6 +12,7 @@ fun CourseDTO.toCourse(image:Int):Course{
         rate = this.rate.toDouble(),
         hasLike = this.hasLike,
         startDate = this.startDate,
-        publishDate = this.publishDate
+        publishDate = this.publishDate,
+        id = this.id
     )
 }

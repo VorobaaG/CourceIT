@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -27,11 +28,16 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.twotone.Bookmark
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -60,6 +66,15 @@ import com.example.coursesit.ui.theme.LightGray
 import com.example.coursesit.ui.theme.White
 import java.nio.file.WatchEvent
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.example.coursesit.R
+
+import com.example.coursesit.ui.theme.DarkGray
+import com.example.coursesit.ui.theme.Glass
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -149,7 +164,8 @@ fun HomeBodyPage(
             items(curses) {
                 CardHomePage(
                     course = it,
-                    onLikeClick = {},
+                    onLikeClick = onLikeClick,
+                    onCardClick = onCardClick
                 )
             }
 
@@ -161,18 +177,23 @@ fun HomeBodyPage(
 @Composable
 fun CardHomePage(
     course: Course,
-    onCardClick:()->Unit = {},
-    onLikeClick:()->Unit={},
+    onCardClick:(Int)->Unit,
+    onLikeClick:(Int)->Unit,
 ){
     Card(
         modifier = Modifier
+            .padding(bottom = 16.dp)
             .height(236.dp)
             .width(328.dp)
-            .padding(bottom = 16.dp),
+            .clip(RoundedCornerShape(16.dp)),
+        colors = CardDefaults.cardColors().copy(
+            containerColor = DarkGray,
+            contentColor = White
+        )
     ) {
-        Column {
+        Column(modifier = Modifier.fillMaxSize()) {
             Box(
-                modifier = Modifier.height(134.dp).offset(y = (-20).dp).fillMaxWidth(),
+                modifier = Modifier.height(114.dp).fillMaxWidth(),
                 ) {
                 Image(
                     painter = painterResource(course.image),
@@ -181,6 +202,34 @@ fun CardHomePage(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(12.dp))
                 )
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end =8.dp,top = 8.dp),
+                    contentAlignment = Alignment.CenterEnd){
+
+                    Box(modifier = Modifier
+                        .height(28.dp)
+                        .width(28.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Glass)
+                        .padding(6.dp)
+                        .clickable(onClick = {onLikeClick(course.id)})
+                    ){
+                        if(course.hasLike == false) {
+                            Icon(
+                                imageVector = Icons.TwoTone.Bookmark,
+                                contentDescription = "",
+                                tint = White
+                            )
+                        }else{
+                            Icon(
+                                imageVector = Icons.Default.Bookmark,
+                                contentDescription = "",
+                                tint = Green
+                            )
+                        }
+                    }
+                }
                 Row(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
@@ -189,7 +238,7 @@ fun CardHomePage(
                 ) {
                     Box(modifier = Modifier
                         .width(46.dp).height(22.dp).clip(RoundedCornerShape(12.dp))
-                        .background(color = Color(0xFF32333A).copy(alpha = 0.3f))
+                        .background(Glass)
 
                     ) {
                         Box(modifier = Modifier
@@ -213,7 +262,7 @@ fun CardHomePage(
                     }
                     Box(modifier = Modifier
                         .width(87.dp).height(22.dp).clip(RoundedCornerShape(12.dp))
-                        .background(color = Color(0xFF32333A).copy(alpha = 0.3f))
+                        .background(Glass)
                     ) {
                         Box(
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 6.dp)
@@ -229,28 +278,64 @@ fun CardHomePage(
                     }
                 }
             }
-            Text(
-                text = course.title,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 16.dp, bottom = 12.dp, start = 16.dp,end = 16.dp))
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = course.text,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(horizontal = 8.dp),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+
+            Box(
+                modifier = Modifier.fillMaxSize().padding(start = 12.dp,end = 12.dp, top = 16.dp)
             ) {
-                Text(course.price.toString(), style = MaterialTheme.typography.titleLarge, color = Color.Black)
-                Text("Подробнее +", color = Color.Green, style = MaterialTheme.typography.bodyMedium)
+                Column {
+                    Text(
+                        text = course.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = course.text,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = White.copy(alpha = 0.7f),
+                        overflow = TextOverflow.StartEllipsis,
+                        maxLines = 2
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            course.price.toString()+" ₽",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = White
+                        )
+                        Row(modifier = Modifier.height(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+
+                            ) {
+                            Text(
+                                //modifier = Modifier.padding(end = 4.dp),
+                                text = "Подробнее",
+                                color = Color.Green,
+                                style = TextStyle(
+                                    fontFamily = FontFamily(Font(R.font.roboto, FontWeight.W600)),
+                                    fontSize = 12.sp,
+                                    lineHeight = 15.sp,
+                                    letterSpacing = 0.4.sp
+                                )
+                            )
+                            Box(modifier = Modifier.requiredSize(16.dp),
+                                contentAlignment = Alignment.Center) {
+                                Icon(
+                                    painter = painterResource(arrow_right),
+                                    contentDescription = "",
+                                    tint = Green,
+                                    modifier = Modifier.width(8.dp)
+                                )
+                            }
+
+                        }
+                    }
+                }
             }
         }
     }
@@ -317,6 +402,7 @@ fun CardPreviewHomePage(){
             image = course_1
         ),
         onLikeClick = {},
+        onCardClick = {}
     )
 }
 
