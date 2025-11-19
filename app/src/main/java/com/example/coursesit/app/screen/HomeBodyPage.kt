@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Bookmark
+import androidx.compose.material.icons.twotone.FilterAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -131,23 +132,20 @@ fun HomeBodyPage(
                 value = "",
                 onValueChange = {},
             )
-            Button(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .width(56.dp).height(56.dp)
-                    .clip(RoundedCornerShape(28.dp)),
-                colors = ButtonDefaults.buttonColors().copy(
-                    containerColor = LightGray
-                ),
-                onClick = {},
-            ) {
+
+            Box(modifier = Modifier.padding(start =8.dp)
+                .width(56.dp).height(56.dp).clip(RoundedCornerShape(28.dp))
+                .background(DarkGray)
+                .clickable(onClick = {}),
+                contentAlignment = Alignment.Center) {
                 Icon(
-                    modifier = Modifier.fillMaxSize(),
-                    imageVector = Icons.Default.FilterAlt,
+                    modifier = Modifier.requiredSize(24.dp),
+                    imageVector = Icons.TwoTone.FilterAlt,
                     contentDescription = "",
                     tint = White
                 )
             }
+
         }
         Text(
             modifier = Modifier
@@ -293,7 +291,7 @@ fun CardHomePage(
                         text = course.text,
                         style = MaterialTheme.typography.bodySmall,
                         color = White.copy(alpha = 0.7f),
-                        overflow = TextOverflow.StartEllipsis,
+                        overflow = TextOverflow.Ellipsis,
                         maxLines = 2
                     )
                     Spacer(modifier = Modifier.height(10.dp))
