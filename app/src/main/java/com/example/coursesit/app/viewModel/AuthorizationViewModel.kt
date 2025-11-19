@@ -1,16 +1,13 @@
 package com.example.coursesit.app.viewModel
 
-import android.R
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.coursesit.data.repository.AuthorizationImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class AuthorizationViewModel @Inject constructor(
+
+class AuthorizationViewModel (
 
 ) : ViewModel() {
 

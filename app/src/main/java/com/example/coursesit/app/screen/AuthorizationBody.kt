@@ -52,21 +52,25 @@ import com.example.coursesit.app.viewModel.AuthorizationViewModel
 import com.example.coursesit.ui.theme.CoursesITTheme
 import com.example.coursesit.ui.theme.*
 import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.coursesit.app.model.ProcessingResult
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun authorizationPage(
-    viewModel: AuthorizationViewModel,
-    modifier: Modifier = Modifier
+fun AuthorizationPage(
+    viewModel: AuthorizationViewModel = koinViewModel(),
+    modifier: Modifier = Modifier,
+    onEnterClick:(ProcessingResult)->Unit
 ){
     val context = LocalContext.current
 
-    authorizationBody(
+    AuthorizationBody(
       onPasswordChange = {viewModel.changeValuePassword(it)},
       password = viewModel.getPassword(),
       onLoginChange = {viewModel.changeValueLogin(it)},
       login = viewModel.getLogin(),
-      onEnterClick = {},
+      onEnterClick = {onEnterClick(ProcessingResult(isSuccess = true, message = ""))},
       onRegistClick = { Log.d("MyTag", "onRegistClick")},
       onForgotPasswordClick = {Log.d("MyTag", "onForgotPasswordClick")},
       statusEnableButton = (viewModel.stateLogin && viewModel.statePassword),
@@ -80,7 +84,7 @@ fun authorizationPage(
 
 @SuppressLint("RememberInComposition")
 @Composable
-fun authorizationBody(
+fun AuthorizationBody(
     onLoginChange:(String)->Unit,
     login:String,
     loginState: Boolean = true,
@@ -147,7 +151,7 @@ fun authorizationBody(
                         if (login.isEmpty()) {
                             Text(
                                 "example@gmail.com",
-                                color = Color.White,
+                                color = White.copy(alpha = 0.5f),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
@@ -192,7 +196,7 @@ fun authorizationBody(
                         if (password.isEmpty()) {
                             Text(
                                 "Введите пароль",
-                                color = Color.White,
+                                color = White.copy(alpha = 0.5f),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
@@ -285,7 +289,7 @@ fun previewPage(){
             Scaffold(modifier = Modifier.fillMaxSize(),
                 containerColor = Dark,
                 contentColor = White) { padding->
-                authorizationBody(
+                AuthorizationBody(
                     login = "",
                     onLoginChange = {},
                     password = "",
