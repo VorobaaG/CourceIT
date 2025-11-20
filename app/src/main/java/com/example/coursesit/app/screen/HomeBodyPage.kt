@@ -153,10 +153,10 @@ fun HomeBodyPage(
         }
         Box(modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onSortDateClick)
+
             .padding(top = 16.dp,end = 16.dp),
             contentAlignment = Alignment.CenterEnd){
-        Row( ) {
+        Row(modifier = Modifier.clickable(onClick = onSortDateClick)) {
             Text(
                 text = "По дате добавления",
                 color = Green,
@@ -232,8 +232,9 @@ fun CardHomePage(
                         .width(28.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Glass)
-                        .padding(6.dp)
                         .clickable(onClick = {onLikeClick(course.id)})
+                        .padding(6.dp)
+
                     ){
                         if(course.hasLike == false) {
                             Icon(

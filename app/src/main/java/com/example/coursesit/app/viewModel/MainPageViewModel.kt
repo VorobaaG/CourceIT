@@ -24,6 +24,7 @@ class MainPageViewModel(
     private val _currentCourses = MutableStateFlow(listOf<Course>())
     val currentCourses= _currentCourses.asStateFlow()
 
+    private var sortByDate = false
 
 
     init {
@@ -42,15 +43,17 @@ class MainPageViewModel(
     fun sortByTime(){
         viewModelScope.launch(Dispatchers.IO) {
             val listCourses = getCourse.getAll()
-            _currentCourses.value = listCourses.sortedBy { LocalDate.parse(it.startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
+            if(sortByDate) _currentCourses.value = listCourses
+            else  _currentCourses.value = listCourses.sortedBy { LocalDate.parse(it.startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
+            sortByDate = sortByDate.not()
         }
     }
 
     fun addInFavoriteList(id:Int){
-        for(i in currentCourses.value){
-            if(i.id == id){
-                i.hasLike.not()
-            }
+
+
+        _currentCourses.value = _currentCourses.value.map { course ->
+            if (course.id == id) course.copy(hasLike = course.hasLike.not()) else course
         }
     }
 
