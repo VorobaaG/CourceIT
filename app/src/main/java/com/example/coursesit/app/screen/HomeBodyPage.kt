@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -89,7 +90,8 @@ fun HomePage(
     HomeBodyPage(
         curses = vm.currentCourses.collectAsState().value,
         onCardClick = onCardClick,
-        onLikeClick = {vm.addInFavoriteList(it)}
+        onLikeClick = {vm.addInFavoriteList(it)},
+        onSortDateClick = {vm.sortByTime()}
     )
 }
 
@@ -98,7 +100,8 @@ fun HomeBodyPage(
     curses: List<Course> = listOf(),
     modifier: Modifier = Modifier,
     onLikeClick: (Int) -> Unit = {},
-    onCardClick: (Int) -> Unit = {}
+    onCardClick: (Int) -> Unit = {},
+    onSortDateClick:()->Unit
 ){
 
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
@@ -148,10 +151,12 @@ fun HomeBodyPage(
             }
 
         }
-        Row( modifier = Modifier
-            .padding(top = 16.dp, start = 172.dp)
+        Box(modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = {})) {
+            .clickable(onClick = onSortDateClick)
+            .padding(top = 16.dp,end = 16.dp),
+            contentAlignment = Alignment.CenterEnd){
+        Row( ) {
             Text(
                 text = "По дате добавления",
                 color = Green,
@@ -168,6 +173,7 @@ fun HomeBodyPage(
                 contentDescription = "",
                 tint = Green
             )
+        }
 
         }
         LazyVerticalGrid(
@@ -213,8 +219,7 @@ fun CardHomePage(
                     contentDescription = null,
                     alignment = Alignment.TopCenter,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth().offset(y = (-10).dp)
-                        .requiredSize(height = 134.dp, width = 328.dp)
+                    modifier = Modifier.fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
                 )
                 Box(modifier = Modifier
@@ -252,44 +257,40 @@ fun CardHomePage(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(modifier = Modifier
-                        .width(46.dp).height(22.dp).clip(RoundedCornerShape(12.dp))
-                        .background(Glass)
+                        .wrapContentSize().clip(RoundedCornerShape(12.dp))
+                        .background(Glass),
+                        contentAlignment = Alignment.Center
 
                     ) {
-                        Box(modifier = Modifier
-                            .padding(vertical = 4.dp, horizontal = 6.dp)
-                            .width(34.dp).height(14.dp)
-
-                        ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Image(
                                 painter = painterResource(id = star),
                                 contentDescription = null,
                                 alignment = Alignment.TopCenter,
                                 contentScale = ContentScale.Crop,
-                                modifier = Modifier.padding(vertical = 1.dp).height(12.dp).width(12.dp)
+                                modifier = Modifier.padding(start = 6.dp)
                             )
                             Text(
                                 text = course.rate.toString(),
                                 color = Color.White,
-                                modifier = Modifier.fillMaxSize().padding(start = 14.dp),
+                                modifier = Modifier.padding(end = 6.dp ,start = 4.dp,top = 4.dp, bottom =4.dp),
                             )
                         }
                     }
-                    Box(modifier = Modifier
-                        .width(87.dp).height(22.dp).clip(RoundedCornerShape(12.dp))
-                        .background(Glass)
+                    Box(modifier = Modifier.wrapContentSize()
+                        .padding(4.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Glass),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Box(
-                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 6.dp)
-                                .fillMaxSize()
-                        ) {
                             Text(
                                 text = course.startDate,
                                 color = Color.White,
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .padding(vertical = 4.dp, horizontal = 6.dp)
 
                             )
-                        }
+
                     }
                 }
             }
@@ -396,6 +397,7 @@ fun PreviewHomePage(){
         HomeBodyPage(
             curses = listCourses,
             modifier = Modifier.padding(top = 40.dp),
+            onSortDateClick = {}
             )
     }
 }
@@ -416,7 +418,8 @@ fun CardPreviewHomePage(){
             image = course_1
         ),
         onLikeClick = {},
-        onCardClick = {}
+        onCardClick = {},
+
     )
 }
 
