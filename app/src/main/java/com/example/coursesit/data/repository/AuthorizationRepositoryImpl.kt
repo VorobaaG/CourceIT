@@ -5,7 +5,7 @@ import com.example.coursesit.data.model.DataAuthorizationField
 import com.example.coursesit.domain.repository.AuthorizationRepository
 import com.example.coursesit.model.AuthorizationField
 
-class AuthorizationImpl(val typeSignIn: AuthorizationSignIn): AuthorizationRepository {
+class AuthorizationRepositoryImpl(val typeSignIn: AuthorizationSignIn): AuthorizationRepository {
 
     override fun signIn(data: AuthorizationField): Boolean {
         return typeSignIn.signIn(DataAuthorizationField(

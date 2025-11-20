@@ -5,10 +5,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.coursesit.domain.useCase.SignInUseCase
+import com.example.coursesit.model.AuthorizationField
 
 
 class AuthorizationViewModel (
-
+    private val authorization: SignInUseCase
 ) : ViewModel() {
 
     private var currentPassword by mutableStateOf("")
@@ -38,6 +40,14 @@ class AuthorizationViewModel (
 
     fun checkValidLogin(){
         stateLogin =  currentLogin.matches(Regex("^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"))
+    }
+
+    fun sigInAccount(): Boolean{
+        checkValidLogin()
+        checkValidPassword()
+        return if(stateLogin && statePassword){
+            authorization.execute(AuthorizationField(login = currentLogin, password = currentPassword))
+        }else false
     }
 
 

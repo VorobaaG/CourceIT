@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -147,14 +148,28 @@ fun HomeBodyPage(
             }
 
         }
-        Text(
-            modifier = Modifier
-                .padding(top = 16.dp, start = 172.dp)
-                .fillMaxWidth()
-                .clickable(onClick = {}),
-            text = "По дате добавления",
-            color = Green
-        )
+        Row( modifier = Modifier
+            .padding(top = 16.dp, start = 172.dp)
+            .fillMaxWidth()
+            .clickable(onClick = {})) {
+            Text(
+                text = "По дате добавления",
+                color = Green,
+                style = TextStyle(
+                    fontFamily = FontFamily(Font(R.font.roboto, FontWeight.W500)),
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    letterSpacing = 0.1.sp
+                )
+            )
+            Icon(
+                modifier = Modifier.requiredSize(16.dp),
+                painter = painterResource(arrow_down_up),
+                contentDescription = "",
+                tint = Green
+            )
+
+        }
         LazyVerticalGrid(
             columns = GridCells.Fixed(count = 1),
             modifier = Modifier.padding(top = 16.dp).fillMaxSize()
@@ -191,14 +206,16 @@ fun CardHomePage(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
-                modifier = Modifier.height(114.dp).fillMaxWidth(),
+                modifier = Modifier.height(114.dp).fillMaxWidth()
                 ) {
                 Image(
                     painter = painterResource(course.image),
                     contentDescription = null,
                     alignment = Alignment.TopCenter,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(12.dp))
+                    modifier = Modifier.fillMaxWidth().offset(y = (-10).dp)
+                        .requiredSize(height = 134.dp, width = 328.dp)
+                        .clip(RoundedCornerShape(12.dp))
                 )
                 Box(modifier = Modifier
                     .fillMaxWidth()
@@ -306,9 +323,8 @@ fun CardHomePage(
                             style = MaterialTheme.typography.titleMedium,
                             color = White
                         )
-                        Row(modifier = Modifier.height(16.dp),
+                        Row(modifier = Modifier.height(16.dp).clickable(onClick = {}),
                             verticalAlignment = Alignment.CenterVertically,
-
                             ) {
                             Text(
                                 //modifier = Modifier.padding(end = 4.dp),
@@ -319,7 +335,7 @@ fun CardHomePage(
                                     fontSize = 12.sp,
                                     lineHeight = 15.sp,
                                     letterSpacing = 0.4.sp
-                                )
+                                ),
                             )
                             Box(modifier = Modifier.requiredSize(16.dp),
                                 contentAlignment = Alignment.Center) {

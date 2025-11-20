@@ -70,7 +70,7 @@ fun AuthorizationPage(
       password = viewModel.getPassword(),
       onLoginChange = {viewModel.changeValueLogin(it)},
       login = viewModel.getLogin(),
-      onEnterClick = {onEnterClick(ProcessingResult(isSuccess = true, message = ""))},
+      onEnterClick = {onEnterClick(ProcessingResult(isSuccess = viewModel.sigInAccount(), message = ""))},
       onRegistClick = { Log.d("MyTag", "onRegistClick")},
       onForgotPasswordClick = {Log.d("MyTag", "onForgotPasswordClick")},
       statusEnableButton = (viewModel.stateLogin && viewModel.statePassword),
