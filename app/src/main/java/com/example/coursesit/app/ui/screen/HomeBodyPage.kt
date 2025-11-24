@@ -136,27 +136,27 @@ fun HomeBodyPage(
         }
         Box(modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onSortDateClick)
+
             .padding(top = 16.dp,end = 16.dp),
             contentAlignment = Alignment.CenterEnd){
-        Row( ) {
-            Text(
-                text = "По дате добавления",
-                color = Green,
-                style = TextStyle(
-                    fontFamily = FontFamily(Font(R.font.roboto, FontWeight.W500)),
-                    fontSize = 14.sp,
-                    lineHeight = 20.sp,
-                    letterSpacing = 0.1.sp
+            Row(modifier = Modifier.clickable(onClick = onSortDateClick)) {
+                Text(
+                    text = "По дате добавления",
+                    color = Green,
+                    style = TextStyle(
+                        fontFamily = FontFamily(Font(R.font.roboto, FontWeight.W500)),
+                        fontSize = 14.sp,
+                        lineHeight = 20.sp,
+                        letterSpacing = 0.1.sp
+                    )
                 )
-            )
-            Icon(
-                modifier = Modifier.requiredSize(16.dp),
-                painter = painterResource(arrow_down_up),
-                contentDescription = "",
-                tint = Green
-            )
-        }
+                Icon(
+                    modifier = Modifier.requiredSize(16.dp),
+                    painter = painterResource(arrow_down_up),
+                    contentDescription = "",
+                    tint = Green
+                )
+            }
 
         }
         LazyVerticalGrid(
@@ -196,7 +196,7 @@ fun CardHomePage(
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier.height(114.dp).fillMaxWidth()
-                ) {
+            ) {
                 AsyncImage(
                     model = course.image?.toUri(),
                     contentDescription = null,
@@ -215,8 +215,9 @@ fun CardHomePage(
                         .width(28.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Glass)
-                        .padding(6.dp)
                         .clickable(onClick = {onLikeClick(course.id)})
+                        .padding(6.dp)
+
                     ){
                         if(course.hasLike == false) {
                             Icon(
@@ -266,13 +267,13 @@ fun CardHomePage(
                         .background(Glass),
                         contentAlignment = Alignment.Center
                     ) {
-                            Text(
-                                text = course.startDate,
-                                color = Color.White,
-                                modifier = Modifier
-                                    .padding(vertical = 4.dp, horizontal = 6.dp)
+                        Text(
+                            text = course.startDate,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(vertical = 4.dp, horizontal = 6.dp)
 
-                            )
+                        )
 
                     }
                 }
@@ -309,7 +310,7 @@ fun CardHomePage(
                         )
                         Row(modifier = Modifier.height(16.dp).clickable(onClick = {}),
                             verticalAlignment = Alignment.CenterVertically,
-                            ) {
+                        ) {
                             Text(
                                 //modifier = Modifier.padding(end = 4.dp),
                                 text = "Подробнее",
@@ -353,7 +354,7 @@ fun PreviewHomePage(){
         startDate = "2024-05-22",
         hasLike = false,
         publishDate = "2024-02-02",
-        image = "course_1"
+        image = "android.resource://data/src/main/res/drawable/course_1.png"
     ),Course(
         title = "Java-разработчик с нуля",
         text = "Освойте backend-разработку и программирование на Java, фреймворки Spring и Maven, работу с базами данных и API. Создайте свой собственный проект, собрав портфолио и став востребованным специалистом для любой IT компании.",

@@ -22,14 +22,14 @@ class InternetCoursesRepositoryImpl(private val context:Context,
     }
 
     override suspend fun getById(id: Int): Course {
-        return  api.getCourseById(id = id.toString()).toCourse()
+        return  api.getCourseById(id = id.toString()).toCourse(searchImage(id))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun sortByTime(): List<Course>  {
         val listCourses = api.getAllCourses()
         val sortList = listCourses.courses?.sortedBy { LocalDate.parse(it.startDate) }
-        return sortList?.map { it.toCourse() }?:listOf()
+        return sortList?.map { it.toCourse(searchImage(it.id)) }?:listOf()
 
     }
 
@@ -39,13 +39,15 @@ class InternetCoursesRepositoryImpl(private val context:Context,
 
     private fun searchImage(id:Int): String{
 
-        if(id == 100){
-            return "android.resource://${context.packageName}/${course_1}".toUri().toString()
+        val coursesImage = listOf(course_1,course_2,course_3)
+
+        return if(id == 100){
+            "android.resource://${context.packageName}/${course_1}".toUri().toString()
         }else if(id == 101){
-            return "android.resource://${context.packageName}/${course_2}".toUri().toString()
+            "android.resource://${context.packageName}/${course_2}".toUri().toString()
         }else if(id == 102){
-            return "android.resource://${context.packageName}/${course_3}".toUri().toString()
+            "android.resource://${context.packageName}/${course_3}".toUri().toString()
         }else
-            return "android.resource://${context.packageName}/${course_1}".toUri().toString()
+            "android.resource://${context.packageName}/${coursesImage.random()}".toUri().toString()
     }
 }

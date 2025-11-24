@@ -6,21 +6,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.Course
 import com.example.domain.useCase.GetCoursesUseCase
+import com.example.domain.useCase.SortCoursesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class MainPageViewModel(
-    private val getCourse: GetCoursesUseCase
+    private val getCourse: GetCoursesUseCase,
+    private val sortCourse: SortCoursesUseCase
 ): ViewModel() {
 
     private val _currentCourses = MutableStateFlow(listOf<Course>())
     val currentCourses= _currentCourses.asStateFlow()
 
-
+    private var sortByDate = false
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -34,25 +38,19 @@ class MainPageViewModel(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun sortByTime(){
         viewModelScope.launch(Dispatchers.IO) {
-            val listCourses = getCourse.getAll()
-            _currentCourses.value = listCourses.sortedBy { LocalDate.parse(it.startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
+            if(sortByDate) _currentCourses.value = getCourse.getAll()
+            else _currentCourses.value = sortCourse.sortByTime()
+            sortByDate = sortByDate.not()
         }
     }
 
     fun addInFavoriteList(id:Int){
-        for(i in currentCourses.value){
-            if(i.id == id){
-                i.hasLike.not()
-            }
+        _currentCourses.value = _currentCourses.value.map { course ->
+            if (course.id == id) course.copy(hasLike = course.hasLike.not()) else course
         }
     }
-
-
-
-
-
 
 }

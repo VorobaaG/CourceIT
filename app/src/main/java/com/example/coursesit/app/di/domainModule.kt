@@ -9,6 +9,7 @@ import com.example.domain.repository.AuthorizationRepository
 import com.example.domain.repository.CoursesRepository
 import com.example.domain.useCase.GetCoursesUseCase
 import com.example.domain.useCase.SignInUseCase
+import com.example.domain.useCase.SortCoursesUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -28,8 +29,9 @@ val domainModule = module{
 
     factory { GetCoursesUseCase(coursesRepository = get(named("fakeRepository")))}
     factory { SignInUseCase(authRep = get()) }
+    factory { SortCoursesUseCase(coursesRepository = get(named("fakeRepository"))) }
 
-    viewModel <MainPageViewModel> { MainPageViewModel(getCourse = get()) }
+    viewModel <MainPageViewModel> { MainPageViewModel(getCourse = get(), sortCourse = get()) }
 
     viewModel <AuthorizationViewModel>{ AuthorizationViewModel(authorization = get()) }
 
