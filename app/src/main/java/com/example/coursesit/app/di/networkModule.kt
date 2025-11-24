@@ -1,9 +1,9 @@
 package com.example.coursesit.app.di
 
-import com.example.coursesit.data.api.CoursesApi
-import com.example.coursesit.data.repository.FakeCoursesApi
+
+import com.example.data.api.CoursesApi
+import com.example.data.repository.FakeCoursesApi
 import org.koin.core.qualifier.named
-import org.koin.dsl.module
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

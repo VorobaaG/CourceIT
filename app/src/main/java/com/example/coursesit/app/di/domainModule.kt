@@ -2,13 +2,13 @@ package com.example.coursesit.app.di
 
 import com.example.coursesit.app.viewModel.AuthorizationViewModel
 import com.example.coursesit.app.viewModel.MainPageViewModel
-import com.example.coursesit.data.repository.AuthorizationRepositoryImpl
-import com.example.coursesit.data.repository.FakeAuthorization
-import com.example.coursesit.data.repository.InternetCoursesRepositoryImpl
-import com.example.coursesit.domain.repository.AuthorizationRepository
-import com.example.coursesit.domain.repository.CoursesRepository
-import com.example.coursesit.domain.useCase.GetCoursesUseCase
-import com.example.coursesit.domain.useCase.SignInUseCase
+import com.example.data.repository.AuthorizationRepositoryImpl
+import com.example.data.repository.FakeAuthorization
+import com.example.data.repository.InternetCoursesRepositoryImpl
+import com.example.domain.repository.AuthorizationRepository
+import com.example.domain.repository.CoursesRepository
+import com.example.domain.useCase.GetCoursesUseCase
+import com.example.domain.useCase.SignInUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -21,8 +21,8 @@ val domainModule = module{
 
     factoryOf(::FakeAuthorization)
 
-    single<CoursesRepository>(named("fakeRepository")) { InternetCoursesRepositoryImpl(api = get(named("fake"))) }
-    single<CoursesRepository>(named("InternetRepository")) { InternetCoursesRepositoryImpl(api = get(named("real"))) }
+    single<CoursesRepository>(named("fakeRepository")) { InternetCoursesRepositoryImpl(api = get(named("fake")), context = get()) }
+    single<CoursesRepository>(named("InternetRepository")) { InternetCoursesRepositoryImpl(api = get(named("real")), context = get()) }
 
     single<AuthorizationRepository>{ AuthorizationRepositoryImpl(typeSignIn = FakeAuthorization()) }
 

@@ -75,4 +75,9 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
 
+    implementation(libs.koil.compose)
+
+    implementation(project(path = ":domain"))
+    implementation(project(path = ":data"))
+
 }

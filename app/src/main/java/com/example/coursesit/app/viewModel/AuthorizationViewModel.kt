@@ -5,8 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.coursesit.domain.useCase.SignInUseCase
-import com.example.coursesit.model.AuthorizationField
+import com.example.domain.entity.AuthorizationField
+import com.example.domain.useCase.SignInUseCase
 
 
 class AuthorizationViewModel (

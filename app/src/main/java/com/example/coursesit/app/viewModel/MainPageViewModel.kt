@@ -2,14 +2,10 @@ package com.example.coursesit.app.viewModel
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.coursesit.R.drawable.course_1
-import com.example.coursesit.R.drawable.course_2
-import com.example.coursesit.domain.useCase.GetCoursesUseCase
-import com.example.coursesit.model.Course
+import com.example.domain.entity.Course
+import com.example.domain.useCase.GetCoursesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
