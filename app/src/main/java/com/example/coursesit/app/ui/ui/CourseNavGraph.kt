@@ -54,7 +54,9 @@ fun CourseNavGraph(
     ){
         composable<AuthorizationPageDirection>{
             AuthorizationPage(
-            onEnterClick = { if(it.isSuccess) navController.navigate(HomePageDirection)}
+            onEnterClick = { if(it.isSuccess) navController.navigate(HomePageDirection){
+                popUpTo<AuthorizationPageDirection>{inclusive = true }
+            } }
             )
         }
 
@@ -73,10 +75,8 @@ fun CourseNavGraph(
             HomePage()
         }
 
-        composable <FavoriteCourseDirection>{
-
+        composable <FavoriteCourseDirection>(){
             FavoritePage()
-
         }
 
         composable <AccountPageDirection>{

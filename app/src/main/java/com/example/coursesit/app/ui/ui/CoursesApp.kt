@@ -1,5 +1,6 @@
 package com.example.coursesit.app.ui.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -32,16 +33,21 @@ fun CoursesApp(
         Scaffold(
             bottomBar = {
 
-                if(//(currentRoute != "com.example.coursesit.app.ui.AuthorizationPageDirection") &&
-                    (currentRoute!=null)){
+                if(currentRoute != AuthorizationPageDirection::class.java.name){
                     CourseBottomAppBar(
                         currentBottomState = currentBottomPage,
                         onClick = { if (it != currentBottomPage){
                             currentBottomPage = it
                             when(it) {
-                            BottomNavigationState.HOME -> navController.navigate(HomePageDirection)
-                            BottomNavigationState.FAVORITE -> navController.navigate(FavoriteCourseDirection)
-                            BottomNavigationState.ACCOUNT -> navController.navigate(AccountPageDirection)
+                            BottomNavigationState.HOME -> navController.navigate(HomePageDirection){
+                                popUpTo(0) { inclusive = true }
+                            }
+                            BottomNavigationState.FAVORITE -> navController.navigate(FavoriteCourseDirection){
+                                popUpTo(0) { inclusive = true }
+                            }
+                            BottomNavigationState.ACCOUNT -> navController.navigate(AccountPageDirection){
+                                popUpTo(0) { inclusive = true }
+                            }
                         }
                             }
                         }
@@ -57,6 +63,15 @@ fun CoursesApp(
                 navController = navController,
                 innerPadding = innerPadding
             )
+            BackHandler {
+                if (navController.previousBackStackEntry != null) {
+                    if(navController.previousBackStackEntry?.destination?.route == HomePageDirection::class.java.name) currentBottomPage = BottomNavigationState.HOME
+                    else if(navController.previousBackStackEntry?.destination?.route == FavoriteCourseDirection::class.java.name) currentBottomPage = BottomNavigationState.FAVORITE
+                    else if(navController.previousBackStackEntry?.destination?.route == AccountPageDirection::class.java.name) currentBottomPage = BottomNavigationState.ACCOUNT
+                    navController.popBackStack()
+
+                }
+            }
         }
     }
 }
