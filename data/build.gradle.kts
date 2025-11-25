@@ -45,5 +45,10 @@ dependencies {
     implementation (libs.gson)
     implementation(libs.converter.gson)
 
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+    testImplementation(libs.room.testing)
+
     implementation(project(path = ":domain"))
 }

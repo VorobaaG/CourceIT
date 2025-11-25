@@ -32,7 +32,7 @@ fun CoursesApp(
         Scaffold(
             bottomBar = {
 
-                if((currentRoute != "com.example.coursesit.app.ui.AuthorizationPageDirection") &&
+                if(//(currentRoute != "com.example.coursesit.app.ui.AuthorizationPageDirection") &&
                     (currentRoute!=null)){
                     CourseBottomAppBar(
                         currentBottomState = currentBottomPage,

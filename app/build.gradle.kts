@@ -77,6 +77,11 @@ dependencies {
 
     implementation(libs.koil.compose)
 
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+    testImplementation(libs.room.testing)
+
     implementation(project(path = ":domain"))
     implementation(project(path = ":data"))
 

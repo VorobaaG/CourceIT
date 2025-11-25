@@ -2,17 +2,14 @@ package com.example.data.mapper
 
 
 
-
-import com.example.data.dto.CourseDTO
-import com.example.data.dto.CoursesListDTO
+import com.example.data.dao.FavoriteCourseEntity
 import com.example.domain.entity.Course
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
-fun CourseDTO.toCourse(imageUri: String? = null):Course{
+fun FavoriteCourseEntity.toCourse():Course{
     return Course(
-        image = imageUri,
+        image = this.image,
         text = this.text,
         price = this.price.toInt(),
         title = this.title,
@@ -25,21 +22,24 @@ fun CourseDTO.toCourse(imageUri: String? = null):Course{
 }
 
 
-fun List<Course>.toCoursesListDTO(): CoursesListDTO{
-    return CoursesListDTO(this.map { it.toCoursesDto() })
+fun List<FavoriteCourseEntity>.toListCourse(): List<Course>{
+    return this.map { it.toCourse() }
 }
-fun Course.toCoursesDto(): CourseDTO{
-    return CourseDTO(
-        id = this.id,
-        title = this.title,
+
+fun Course.toFavoriteCourseEntity(): FavoriteCourseEntity{
+    return FavoriteCourseEntity(
+        image = this.image?:"",
         text = this.text,
-        price = this.price.toString(),
-        rate = this.rate.toString(),
-        startDate = this.startDate.toString(),
+        price = this.price.toInt(),
+        title = this.title,
+        rate = this.rate,
         hasLike = this.hasLike,
+        startDate = this.startDate,
         publishDate = this.publishDate,
+        id = this.id
     )
 }
+
 
 private fun formatDate(dataString: String): String{
     return try {
@@ -51,5 +51,4 @@ private fun formatDate(dataString: String): String{
         dataString
     }
 }
-
 

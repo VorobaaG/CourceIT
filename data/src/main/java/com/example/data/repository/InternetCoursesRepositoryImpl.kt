@@ -21,7 +21,7 @@ class InternetCoursesRepositoryImpl(private val context:Context,
 
     }
 
-    override suspend fun getById(id: Int): Course {
+    override suspend fun getById(id: Int): Course? {
         return  api.getCourseById(id = id.toString()).toCourse(searchImage(id))
     }
 
@@ -33,8 +33,12 @@ class InternetCoursesRepositoryImpl(private val context:Context,
 
     }
 
-    override fun save() {
-        TODO("Not yet implemented")
+    override suspend fun save(course: Course): Boolean {
+        return true
+    }
+
+    override suspend fun delete(course: Course): Boolean {
+        return true
     }
 
     private fun searchImage(id:Int): String{

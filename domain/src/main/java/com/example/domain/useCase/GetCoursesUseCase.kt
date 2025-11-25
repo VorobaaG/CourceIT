@@ -12,7 +12,7 @@ class GetCoursesUseCase(private val coursesRepository: CoursesRepository) {
         return listCourse
     }
 
-    suspend fun getById(id:Int): Course{
+    suspend fun getById(id:Int): Course?{
      return coursesRepository.getById(id)
     }
 

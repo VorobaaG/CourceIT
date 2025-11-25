@@ -87,7 +87,7 @@ fun HomeBodyPage(
     onSortDateClick:()->Unit
 ){
 
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.then(modifier).fillMaxSize().padding(horizontal = 16.dp)) {
         Row(
             modifier = Modifier.then(modifier).fillMaxWidth()
                 .height(56.dp)
