@@ -25,27 +25,28 @@ val domainModule = module{
 
     factoryOf(::FakeAuthorization)
 
-    single<CoursesRepository>(named("fakeRepository")) { InternetCoursesRepositoryImpl(api = get(named("fakeMainApi")), context = get()) }
-    single<CoursesRepository>(named("fakeFavoriteRepository")) { InternetCoursesRepositoryImpl(api = get(named("fakeFavoriteApi")), context = get()) }
+    single<CoursesRepository>(named("FakeRepository")) { InternetCoursesRepositoryImpl(api = get(named("fakeMainApi")), context = get()) }
     single<CoursesRepository>(named("InternetRepository")) { InternetCoursesRepositoryImpl(api = get(named("real")), context = get()) }
+    single<CoursesRepository>(named("LocalRepository")){ LocalCoursesRepositoryImp(course = get()) }
 
     single<AuthorizationRepository>{ AuthorizationRepositoryImpl(typeSignIn = FakeAuthorization()) }
 
-    factory { GetCoursesUseCase(coursesRepository = get(named("fakeRepository")))}
-    factory { SortCoursesUseCase(coursesRepository = get(named("fakeRepository"))) }
+    factory<GetCoursesUseCase> (named("getFakeCoursesUserCase")){ GetCoursesUseCase(coursesRepository = get(named("FakeRepository")))}
+    factory<GetCoursesUseCase> (named("getLocalCoursesUserCase")){ GetCoursesUseCase(coursesRepository = get((named("LocalRepository")))) }
 
 
+    factory<SortCoursesUseCase> (named("sortFakeCoursesUserCase")){ SortCoursesUseCase(coursesRepository = get(named("FakeRepository"))) }
+    factory<SortCoursesUseCase> (named("sortLocalCoursesUserCase")){ SortCoursesUseCase(coursesRepository = get(named("LocalRepository"))) }
 
-    factory (named("getFavoriteUseCase")){ GetCoursesUseCase(coursesRepository = get(named("fakeFavoriteRepository")))}
-    factory (named("sortFavoriteUseCase")){ GetCoursesUseCase(coursesRepository = get(named("fakeFavoriteRepository")))}
+    factory<SaveAndDeleteUseCase>{ SaveAndDeleteUseCase(coursesRepository = LocalCoursesRepositoryImp(course = get())) }
 
-    factory { SaveAndDeleteUseCase(coursesRepository = LocalCoursesRepositoryImp(course = get())) }
-
-    factory { SignInUseCase(authRep = get()) }
+    factory<SignInUseCase>{ SignInUseCase(authRep = get()) }
 
 
-    viewModel <MainPageViewModel> { MainPageViewModel(getCourse = get(), sortCourse = get(), saveAndDeleteUseCase = get()) }
-    
+    viewModel <MainPageViewModel> (named("HomePage")){
+        MainPageViewModel(getCourse = get(named("getFakeCoursesUserCase")), sortCourse = get(named("sortFakeCoursesUserCase")), saveAndDeleteUseCase = get()) }
+    viewModel <MainPageViewModel> (named("FavoritePage")){
+        MainPageViewModel(getCourse = get(named("getLocalCoursesUserCase")), sortCourse = get(named("sortLocalCoursesUserCase")), saveAndDeleteUseCase = get()) }
 
 
     viewModel <AuthorizationViewModel>{ AuthorizationViewModel(authorization = get()) }

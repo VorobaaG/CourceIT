@@ -38,7 +38,7 @@ class FakeCoursesApi(fakeInitCourses:List<Course>? = null): CoursesApi {
                     price = "1299",
                     rate = "4.3",
                     startDate = "2024-10-12",
-                    hasLike = true,
+                    hasLike = false,
                     publishDate = "2024-08-10"
                 ),
                 CourseDTO(

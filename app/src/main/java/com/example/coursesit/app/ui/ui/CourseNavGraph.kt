@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.coursesit.app.ui.screen.AuthorizationPage
+import com.example.coursesit.app.ui.screen.FavoritePage
 import com.example.coursesit.app.ui.screen.HomeBodyPage
 import com.example.coursesit.app.ui.screen.HomePage
 import com.example.coursesit.app.viewModel.MainPageViewModel
@@ -74,8 +75,8 @@ fun CourseNavGraph(
 
         composable <FavoriteCourseDirection>{
 
+            FavoritePage()
 
-            Text(modifier =  Modifier.fillMaxSize(), text = "Favorite", textAlign = TextAlign.Center)
         }
 
         composable <AccountPageDirection>{

@@ -12,4 +12,9 @@ class SaveAndDeleteUseCase(private val coursesRepository: CoursesRepository) {
         coursesRepository.delete(course = course)
     }
 
+    suspend fun isHaveLiked(course: Course): Boolean{
+        val searchCourse = coursesRepository.getById(course.id)
+        return searchCourse?.hasLike == true
+    }
+
 }

@@ -62,10 +62,11 @@ import com.example.coursesit.R
 import com.example.coursesit.app.ui.theme.DarkGray
 import com.example.coursesit.app.ui.theme.Glass
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.qualifier.named
 
 @Composable
 fun HomePage(
-    vm: MainPageViewModel = koinViewModel<MainPageViewModel>(),
+    vm: MainPageViewModel = koinViewModel(qualifier = named("HomePage")),
     onCardClick: (Int) -> Unit = {}
 
 ){

@@ -13,10 +13,10 @@ interface CourseDao {
     fun insert(course: FavoriteCourseEntity)
 
     @Query("SELECT * FROM favorite_Course")
-    fun getAll():List<FavoriteCourseEntity>
+    fun getAll():List<FavoriteCourseEntity>?
 
     @Query("SELECT * FROM favorite_Course WHERE favorite_Course.id =:id")
-    fun getById(id:Int): FavoriteCourseEntity
+    fun getById(id:Int): FavoriteCourseEntity?
 
     @Query("SELECT * FROM favorite_Course ORDER BY startDate")
     fun sortByTime():List<FavoriteCourseEntity>

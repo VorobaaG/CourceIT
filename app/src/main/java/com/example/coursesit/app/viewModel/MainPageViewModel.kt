@@ -25,7 +25,11 @@ class MainPageViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _currentCourses.value = getCourse.getAll()
+            val listAllCourse = getCourse.getAll()
+            _currentCourses.value = listAllCourse.map {
+                if(saveAndDeleteUseCase.isHaveLiked(it)== true)
+                    it.copy(hasLike = true)
+                else it }
         }
     }
 
@@ -43,7 +47,7 @@ class MainPageViewModel(
                 if (course.id == id) {
                     if (course.hasLike) {
                         saveAndDeleteUseCase.delete(course)
-                    } else saveAndDeleteUseCase.save(course)
+                    } else saveAndDeleteUseCase.save(course.copy(hasLike = true))
                     course.copy(hasLike = course.hasLike.not())
                 } else course
             }
