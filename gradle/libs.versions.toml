@@ -20,6 +20,13 @@ composeIcons = "1.7.8"
 retrofit = "3.0.0"
 converterGson = "3.0.0"
 gson = "2.13.1"
+appcompat = "1.7.1"
+material = "1.13.0"
+jetbrainsKotlinJvm = "2.0.21"
+
+koilCompose = "3.0.0"
+
+room = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,12 +54,20 @@ koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", versi
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+koil-compose = {module = "io.coil-kt.coil3:coil-compose", version.ref = "koilCompose"}
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 

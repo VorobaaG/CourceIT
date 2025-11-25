@@ -1,24 +1,22 @@
 package com.example.coursesit.app.viewModel
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.coursesit.R.drawable.course_1
-import com.example.coursesit.R.drawable.course_2
-import com.example.coursesit.domain.useCase.GetCoursesUseCase
-import com.example.coursesit.model.Course
+import com.example.domain.entity.Course
+import com.example.domain.useCase.GetCoursesUseCase
+import com.example.domain.useCase.SaveAndDeleteUseCase
+import com.example.domain.useCase.SortCoursesUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+
 
 class MainPageViewModel(
-    private val getCourse: GetCoursesUseCase
+    private val getCourse: GetCoursesUseCase,
+    private val sortCourse: SortCoursesUseCase,
+    private val saveAndDeleteUseCase: SaveAndDeleteUseCase
 ): ViewModel() {
 
     private val _currentCourses = MutableStateFlow(listOf<Course>())
@@ -26,40 +24,35 @@ class MainPageViewModel(
 
     private var sortByDate = false
 
-
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _currentCourses.value = getCourse.getAll()
+            val listAllCourse = getCourse.getAll()
+            _currentCourses.value = listAllCourse.map {
+                if(saveAndDeleteUseCase.isHaveLiked(it)== true)
+                    it.copy(hasLike = true)
+                else it }
         }
     }
 
-    fun showAllFavoriteCourses(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _currentCourses.value = currentCourses.value.filter { it.hasLike == true }.map {getCourse.getById(it.id) }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     fun sortByTime(){
         viewModelScope.launch(Dispatchers.IO) {
-            val listCourses = getCourse.getAll()
-            if(sortByDate) _currentCourses.value = listCourses
-            else  _currentCourses.value = listCourses.sortedBy { LocalDate.parse(it.startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
+            if(sortByDate) _currentCourses.value = sortCourse.sortByName(currentCourses.value)
+            else _currentCourses.value = sortCourse.sortByTime()
             sortByDate = sortByDate.not()
         }
     }
 
     fun addInFavoriteList(id:Int){
-
-
-        _currentCourses.value = _currentCourses.value.map { course ->
-            if (course.id == id) course.copy(hasLike = course.hasLike.not()) else course
+        viewModelScope.launch(Dispatchers.IO) {
+            _currentCourses.value = _currentCourses.value.map { course ->
+                if (course.id == id) {
+                    if (course.hasLike) {
+                        saveAndDeleteUseCase.delete(course)
+                    } else saveAndDeleteUseCase.save(course.copy(hasLike = true))
+                    course.copy(hasLike = course.hasLike.not())
+                } else course
+            }
         }
     }
-
-
-
-
-
 
 }
